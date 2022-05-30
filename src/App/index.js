@@ -6,19 +6,44 @@ import { AppUI } from "./AppUI";
 //   { text: "ir al museo", completed: false },
 //   { text: "lavar ropa", completed: true },
 // ];
-function App() {
-  const localStorageTodos=localStorage.getItem('TODOS_V1') ;
+/**
+ * 
+ * @itemName
+ * ? Es el elemento con el que trabajaremos dentro del hook para la persistencia de datos
+ * @initialValue
+ * ? Este parametro lo usaremos para que se puede almacenar un array o un string con más libertad
+ */
+function useLocalStorage(itemName,initialValue) {
+  const localStorageItem=localStorage.getItem(itemName) ;
   // *? Creamos en primer array por si aun el usuario no ha creado nada
-  let parsedTodos;
   // *? Si es que ese localStorage ya existe entonces traeremos la informacion
-  if(!localStorageTodos){ //*? Si No existe nada en el local Storage
-    localStorage.setItem('TODOS_V1',JSON.stringify([]));
-    parsedTodos=[];
+  let parsedItem;
+
+  if(!localStorageItem){ //*? Si No existe nada en el local Storage
+    localStorage.setItem(itemName,JSON.stringify(initialValue));
+    parsedItem=initialValue;
   } else{
-    parsedTodos=JSON.parse(localStorageTodos)
+    parsedItem=JSON.parse(localStorageItem)
   }
 
-  const [todos, setTodos] = React.useState(parsedTodos);
+  const [item, setItem] = React.useState(parsedItem);
+  //*? Desde aqui hacemos persistencia de datos para la lista de tareas
+  //*? La funcion saveTodos servirá como puente para localStorage y completeTodo
+  const saveItem=(newItem)=>{
+    const stringifiedItem=JSON.stringify(newItem);
+    localStorage.setItem(itemName, stringifiedItem);
+    setItem(newItem)
+  };
+  return [
+    item,
+    saveItem,
+  ]
+}
+
+function App() {
+  
+  const [todos,saveTodos]=useLocalStorage('TODOS_V1',[])
+  const [patitos,savePatitos]=useLocalStorage('PATITO_V1','MARIA')
   const [searchValue, setSearchValue] = React.useState("");
   
   // *? contando TODOs
@@ -39,13 +64,7 @@ function App() {
       return todoText.includes(searchText);
     });
   }
-  //*? Desde aqui hacemos persistencia de datos para la lista de tareas
-  //*? La funcion saveTodos servirá como puente para localStorage y completeTodo
-  const saveTodos=(newTodos)=>{
-    const stringifiedTodos=JSON.stringify(newTodos);
-    localStorage.setItem('TODOS_V1', stringifiedTodos);
-    setTodos(newTodos)
-  }
+  
 
   const completeTodo = (text) => {
     //*? Extraemos la posicion de la tarea que queremos eliminar para poder editarlo
@@ -66,17 +85,18 @@ function App() {
     newTodos.splice(todoIndex, 1);
     saveTodos(newTodos);
   };
-  return (
+  return [
+    <p>{patitos}</p>,
     <AppUI
-      totalTodos={totalTodos}
-      completedTodos={completedTodos}
-      searchValue={searchValue}
-      setSearchValue={setSearchValue}
-      searchedTodos={searchedTodos}
-      completeTodo={completeTodo}
-      deleteTodo={deleteTodo}
+    totalTodos={totalTodos}
+    completedTodos={completedTodos}
+    searchValue={searchValue}
+    setSearchValue={setSearchValue}
+    searchedTodos={searchedTodos}
+    completeTodo={completeTodo}
+    deleteTodo={deleteTodo}
     />
-  );
+  ];
 }
 
 export default App;
