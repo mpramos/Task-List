@@ -1,3 +1,4 @@
 APPUI.jsx => Es la abstracción de todo el UI
 osea de lo que antes estaba en la parte del return dentro de 
 APP/index.jsx 
+En App/index es donde importaremos al PROVIDER
