@@ -8,18 +8,20 @@ import { TodoList } from "../TodoList";
 import { TodoItem } from "../TodoItem";
 import { CreateTodoButton } from "../CreateTodoButton";
 export const AppUI = () => {
+    //? Acá tenemos a nuestro value el cual guardamos en el Provider
+    const {
+        error,
+        loading,
+        searchedTodos,
+        completeTodo,
+        deleteTodo
+    } = React.useContext(TodoContext)
   return (
     <>
       <TodoCounter />
       <TodoSearch />
-       <TodoContext.Consumer>
-           {({
-               error,
-               loading,
-               searchedTodos,
-               completeTodo,
-               deleteTodo
-           })=>(
+           {/* //*? Enviaremos una funcion el cual va a recibir la informacion 
+           //*? de value*/}
                 <TodoList>
                 {error && <p>Desesperate , hubo un error... </p>}
                 {loading && <p>Estamos cargando, no desesperes....</p>}
@@ -35,9 +37,6 @@ export const AppUI = () => {
                   />
                 ))}
               </TodoList>
-               )
-                }
-       </TodoContext.Consumer>
       <CreateTodoButton />
     </>
   );
