@@ -1,0 +1,2 @@
+En el Modal podemos mostrar nuestros componentes u otro contenido 
+como ser formularios

@@ -2,7 +2,7 @@ import React from 'react'
 import { useLocalStorage } from './useLocalStorage';
 // ? Acá importamos tambien el TodoContext
 const TodoContext= React.createContext()
-
+// const todoDefault=[{text:'todo1', completed:true},{text:'todo1', completed:false}]
 function TodoProvider(props) {
      // *! tenemos que llamar en un objeto a ese customHook
   const {
@@ -12,7 +12,7 @@ function TodoProvider(props) {
     error
   } = useLocalStorage("TODOS_V1", []);
   const [searchValue, setSearchValue] = React.useState("");
-
+  const [openModal,setOpenModal] = React.useState(false)
   // *? contando TODOs
   const completedTodos = todos.filter((todo) => !!todo.completed).length;
   const totalTodos = todos.length;

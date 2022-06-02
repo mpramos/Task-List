@@ -39,7 +39,7 @@ import React from "react";
           setError(error);
         }
       }, 1000);
-    });
+    },[]);
   
     //*? Desde aqui hacemos persistencia de datos para la lista de tareas
     //*? La funcion saveTodos servirá como puente para localStorage y completeTodo
