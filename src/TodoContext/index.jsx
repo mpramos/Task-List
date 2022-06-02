@@ -31,7 +31,14 @@ function TodoProvider(props) {
       return todoText.includes(searchText);
     });
   }
-
+  const addTodo = (text) => {
+   const newTodos=[...todos]
+   newTodos.push({
+     completed:false,
+     text:text,
+   })
+   saveTodos(newTodos)
+  };
   const completeTodo = (text) => {
     //*? Extraemos la posicion de la tarea que queremos eliminar para poder editarlo
     const todoIndex = todos.findIndex((todo) => todo.text === text);
@@ -63,7 +70,10 @@ function TodoProvider(props) {
             setSearchValue,
             searchedTodos,
             completeTodo,
+            addTodo,
             deleteTodo,
+            openModal,
+            setOpenModal
         }}>
             {/* //*? Estos componentes de children van a poder usar nuestro consumidor */}
             {props.children}
